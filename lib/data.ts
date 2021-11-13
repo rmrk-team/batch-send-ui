@@ -1,0 +1,10 @@
+export const sendData = [
+    {
+        recipient: 'Gi5xtagP3JSTT7XWCta69JbuSpMv3EPKo4opVRcY76rNnh2',
+        nftId: '8788668-e0b9bdcc456a36497a-KANHEAD-wreath_headwear-00007384'
+    },
+    {
+        recipient: 'Gi5xtagP3JSTT7XWCta69JbuSpMv3EPKo4opVRcY76rNnh2',
+        nftId: '8788668-e0b9bdcc456a36497a-KANHEAD-wreath_headwear-00007197'
+    }
+]

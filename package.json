@@ -8,11 +8,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "framer-motion": "^5.3.0",
     "next": "12.0.3",
+    "prettier": "^2.4.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "@chakra-ui/icons": "^1.0.7",
+    "@chakra-ui/react": "^1.4.1",
+    "@chakra-ui/theme-tools": "1.1.1",
+    "@emotion/react": "11.1.5",
+    "@emotion/styled": "11.1.5",
+    "@polkadot/api": "^6.7.1",
+    "@polkadot/extension-dapp": "^0.41.1",
+    "@polkadot/react-identicon": "^0.86.5",
+    "@polkadot/util-crypto": "^7.8.2",
+    "@polkadot/x-randomvalues": "^7.8.2",
+    "@substra-hooks/core": "^0.0.26",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
     "eslint": "7",
