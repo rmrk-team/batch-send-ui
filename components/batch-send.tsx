@@ -1,15 +1,19 @@
 import { Box, Button, Select, useToast } from '@chakra-ui/react';
 import PageContainer from '../components/app/page-container';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useApiProvider, usePolkadotExtension } from '@substra-hooks/core';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
-import { sendData } from '../lib/data';
 import { ApiPromise } from '@polkadot/api';
 import { web3FromAddress } from '@polkadot/extension-dapp';
+import Dropzone from './upload-data';
+
+type SendData = { recipient: string; nftId: string }[];
 
 export const sendBatch = async (
   api: ApiPromise | null,
   account: InjectedAccountWithMeta | undefined,
+  version: string,
+  sendData: SendData,
   onSuccess: Function,
   onPending: Function,
   onError: Function,
@@ -22,9 +26,10 @@ export const sendBatch = async (
     if (!account) {
       throw new Error('Account not ready');
     }
+
     const remarks = sendData.map((sendDataItem) => {
       return api.tx.system.remark(
-        `RMRK::SEND::2.0.0::${sendDataItem.nftId}::${sendDataItem.recipient}`,
+        `RMRK::SEND::${version}::${sendDataItem.nftId}::${sendDataItem.recipient}`,
       );
     });
 
@@ -46,10 +51,22 @@ export const sendBatch = async (
 };
 
 const BatchSend = () => {
+  const [sendData, setData] = useState<SendData>([]);
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta>();
+  const [version, setVersion] = useState('2.0.0');
   const { accounts } = usePolkadotExtension();
   const apiProvider = useApiProvider();
   const toast = useToast();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const dataPayload = await fetch('/data.json');
+      const dataJson = await dataPayload.json();
+      setData(dataJson);
+    };
+
+    fetchData();
+  }, []);
 
   const onSuccess = () => {
     toast({
@@ -79,60 +96,97 @@ const BatchSend = () => {
     }
   };
 
-  const send = () => {
-    sendBatch(apiProvider, selectedAccount, onSuccess, onPending, onError);
+  const onChangeVersion = (e: ChangeEvent<HTMLSelectElement>) => {
+    setVersion(e.target.value);
   };
 
-  console.log(accounts)
+  const send = () => {
+    sendBatch(apiProvider, selectedAccount, version, sendData, onSuccess, onPending, onError);
+  };
+
+  const onFileAccepted = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // Do whatever you want with the file contents
+      const binaryStr = reader.result;
+      if (binaryStr) {
+        const jsonArray: SendData = JSON.parse(new TextDecoder().decode(binaryStr as ArrayBuffer));
+        setData(jsonArray);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  };
 
   return (
     <PageContainer>
-      <Box mb={4}>Batch Send RMRK2 NFTs</Box>
-
       <Box>
-        <Box mb={1}>From:</Box>
-        <Box mb={4}>
-          <Select
-            size={'sm'}
-            onChange={onChange}
-            value={selectedAccount?.address}
-            _focus={{ outline: 'none' }}>
-            {(accounts || []).map((account) => (
-              <option key={`account-${account.address}`} value={account.address}>
-                {account.meta.name} - {account.address}
-              </option>
+        <Box mb={4}>Batch Send RMRK NFTs</Box>
+
+        <Box maxW={400}>
+          <Box mb={1}>RMRK version:</Box>
+          <Box mb={4}>
+            <Select
+              size={'sm'}
+              onChange={onChangeVersion}
+              value={version}
+              _focus={{ outline: 'none' }}>
+              <option value="1.0.0">RMR 1.0.0</option>
+              <option value="2.0.0">RMRK 2.0.0</option>
+            </Select>
+          </Box>
+        </Box>
+
+        <Box maxW={400}>
+          <Box mb={1}>From:</Box>
+          <Box mb={4}>
+            <Select
+              size={'sm'}
+              onChange={onChange}
+              value={selectedAccount?.address}
+              _focus={{ outline: 'none' }}>
+              {(accounts || []).map((account) => (
+                <option key={`account-${account.address}`} value={account.address}>
+                  {account.meta.name} - {account.address}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        </Box>
+
+        <Box maxW={400} mb={4}>
+          <Dropzone onFileAccepted={onFileAccepted} />
+        </Box>
+
+        <Box>
+          <Box>
+            <Box mb={1}>Sending following:</Box>
+            {sendData.map((sendDataItem) => (
+              <Box
+                key={sendDataItem.nftId}
+                display={'flex'}
+                my={1}
+                borderBottomWidth={1}
+                borderBottomStyle={'solid'}
+                pb={2}>
+                <Box mr={2}>
+                  <Box color={'pink'} as={'span'} mr={1}>
+                    NFT:
+                  </Box>{' '}
+                  {sendDataItem.nftId}
+                </Box>
+                <Box>
+                  <Box color={'pink'} as={'span'} mr={1}>
+                    TO:
+                  </Box>{' '}
+                  {sendDataItem.recipient}
+                </Box>
+              </Box>
             ))}
-          </Select>
-        </Box>
+          </Box>
 
-        <Box>
-          <Box mb={1}>Sending following:</Box>
-          {sendData.map((sendDataItem) => (
-            <Box
-              key={sendDataItem.nftId}
-              display={'flex'}
-              my={1}
-              borderBottomWidth={1}
-              borderBottomStyle={'solid'}
-              pb={2}>
-              <Box mr={2}>
-                <Box color={'pink'} as={'span'} mr={1}>
-                  NFT:
-                </Box>{' '}
-                {sendDataItem.nftId}
-              </Box>
-              <Box>
-                <Box color={'pink'} as={'span'} mr={1}>
-                  TO:
-                </Box>{' '}
-                {sendDataItem.recipient}
-              </Box>
-            </Box>
-          ))}
-        </Box>
-
-        <Box>
-          <Button onClick={send}>Send</Button>
+          <Box mt={4}>
+            <Button onClick={send}>Send</Button>
+          </Box>
         </Box>
       </Box>
     </PageContainer>

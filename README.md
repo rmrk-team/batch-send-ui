@@ -15,5 +15,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Git Clone project and cd  to folder
 - Install node modules as per Readme
 - start project and open localhost url as per readme
-- Edit file in lib/data.ts  to modify NFT ids and recipients
+- Edit file in public/data.json to modify NFT ids and recipients OR upload new JSON file using file uploader [with a following structure](./public/data.json) 
 - in browser select account to send from and press Send
