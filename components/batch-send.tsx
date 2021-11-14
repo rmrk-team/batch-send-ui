@@ -58,16 +58,6 @@ const BatchSend = () => {
   const apiProvider = useApiProvider();
   const toast = useToast();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const dataPayload = await fetch('/data.json');
-      const dataJson = await dataPayload.json();
-      setData(dataJson);
-    };
-
-    fetchData();
-  }, []);
-
   const onSuccess = () => {
     toast({
       status: 'success',
@@ -117,6 +107,17 @@ const BatchSend = () => {
     reader.readAsArrayBuffer(file);
   };
 
+  const codeBlock = `[
+  {
+    "recipient": "Gi5xtagP3JSTT7XWCta69JbuSpMv3EPKo4opVRcY76rNnh2",
+    "nftId": "8788668-e0b9bdcc456a36497a-KANHEAD-wreath_headwear-00007384"
+  },
+  {
+    "recipient": "Gi5xtagP3JSTT7XWCta69JbuSpMv3EPKo4opVRcY76rNnh2",
+    "nftId": "8788668-e0b9bdcc456a36497a-KANHEAD-wreath_headwear-00007197"
+  }
+]`
+
   return (
     <PageContainer>
       <Box>
@@ -150,6 +151,13 @@ const BatchSend = () => {
                 </option>
               ))}
             </Select>
+          </Box>
+        </Box>
+
+        <Box mb={2} borderRadius={10} borderWidth={1} borderColor={'gray'} p={4} maxW={600}>
+          <Box mb={2}>Upload a JSON file in following format:</Box>
+          <Box as={'pre'} fontSize={'xs'}>
+            {codeBlock}
           </Box>
         </Box>
 
