@@ -148,7 +148,7 @@ const BatchSend = () => {
               onChange={onChangeVersion}
               value={version}
               _focus={{ outline: 'none' }}>
-              <option value="1.0.0">RMR 1.0.0</option>
+              <option value="1.0.0">RMRK 1.0.0</option>
               <option value="2.0.0">RMRK 2.0.0</option>
             </Select>
           </Box>
