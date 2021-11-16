@@ -58,6 +58,16 @@ const BatchSend = () => {
   const apiProvider = useApiProvider();
   const toast = useToast();
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const dataPayload = await fetch('/data.json');
+  //     const dataJson = await dataPayload.json();
+  //     setData(dataJson);
+  //   };
+  //
+  //   fetchData();
+  // }, []);
+
   const onSuccess = () => {
     toast({
       status: 'success',
@@ -91,7 +101,14 @@ const BatchSend = () => {
   };
 
   const send = () => {
-    sendBatch(apiProvider, selectedAccount, version, sendData, onSuccess, onPending, onError);
+    if (sendData && sendData.length > 400) {
+      toast({
+        status: 'error',
+        title: `Sorry you can't send more than 400 NFTs with this UI`,
+      });
+    } else {
+      sendBatch(apiProvider, selectedAccount, version, sendData, onSuccess, onPending, onError);
+    }
   };
 
   const onFileAccepted = (file: File) => {
@@ -116,7 +133,7 @@ const BatchSend = () => {
     "recipient": "Gi5xtagP3JSTT7XWCta69JbuSpMv3EPKo4opVRcY76rNnh2",
     "nftId": "8788668-e0b9bdcc456a36497a-KANHEAD-wreath_headwear-00007197"
   }
-]`
+]`;
 
   return (
     <PageContainer>
