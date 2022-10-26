@@ -6,6 +6,7 @@ import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { ApiPromise } from '@polkadot/api';
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import Dropzone from './upload-data';
+import { encodeAddress } from '@polkadot/util-crypto';
 
 type SendData = { recipient: string; nftId: string }[];
 
@@ -118,7 +119,12 @@ const BatchSend = () => {
       const binaryStr = reader.result;
       if (binaryStr) {
         const jsonArray: SendData = JSON.parse(new TextDecoder().decode(binaryStr as ArrayBuffer));
-        setData(jsonArray);
+        const kusamaJsonArray = jsonArray.map(({ recipient, nftId }) => ({
+          //reencode address for Kusama
+          recipient: encodeAddress(recipient, 2),
+          nftId
+        }))
+        setData(kusamaJsonArray);
       }
     };
     reader.readAsArrayBuffer(file);
