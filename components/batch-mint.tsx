@@ -7,12 +7,18 @@ import { ApiPromise } from '@polkadot/api';
 import { web3FromAddress } from '@polkadot/extension-dapp';
 import Dropzone from './upload-data';
 import { encodeAddress } from '@polkadot/util-crypto';
+import {
+  selectedAccountSelector,
+  selectedWalletSelector,
+  useSelectedAccountsStore,
+  useWalletsStore
+} from "@rmrk-team/dotsama-wallet-react";
 
 type SendData = { recipient: string; nftId: string }[];
 
 export const sendBatch = async (
   api: ApiPromise | null,
-  account: InjectedAccountWithMeta | undefined,
+  accountAddress: string | undefined,
   version: string,
   sendData: SendData,
   onSuccess: Function,
@@ -24,7 +30,7 @@ export const sendBatch = async (
       throw new Error('Api not ready');
     }
 
-    if (!account) {
+    if (!accountAddress) {
       throw new Error('Account not ready');
     }
 
@@ -34,7 +40,6 @@ export const sendBatch = async (
       );
     });
 
-    const accountAddress = account.address;
     const acc = await web3FromAddress(accountAddress);
     const tx = api.tx.utility.batchAll(remarks);
     await tx.signAndSend(accountAddress, { signer: acc.signer }, async (result) => {
@@ -53,11 +58,12 @@ export const sendBatch = async (
 
 const BatchMint = () => {
   const [sendData, setData] = useState<SendData>([]);
-  const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta>();
   const [version, setVersion] = useState('2.0.0');
-  const { accounts } = usePolkadotExtension();
   const apiProvider = useApiProvider();
   const toast = useToast();
+
+  const selectedAccount = useSelectedAccountsStore(selectedAccountSelector);
+  const accountCopy = selectedAccount?.name || selectedAccount?.address;
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -90,12 +96,6 @@ const BatchMint = () => {
     });
   };
 
-  const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const account = (accounts || []).find((acc) => acc.address === e.target.value);
-    if (account) {
-      setSelectedAccount(account);
-    }
-  };
 
   const onChangeVersion = (e: ChangeEvent<HTMLSelectElement>) => {
     setVersion(e.target.value);
@@ -108,7 +108,7 @@ const BatchMint = () => {
         title: `Sorry you can't send more than 400 NFTs with this UI`,
       });
     } else {
-      sendBatch(apiProvider, selectedAccount, version, sendData, onSuccess, onPending, onError);
+      sendBatch(apiProvider, selectedAccount?.address, version, sendData, onSuccess, onPending, onError);
     }
   };
 
@@ -156,23 +156,6 @@ const BatchMint = () => {
               _focus={{ outline: 'none' }}>
               <option value="1.0.0">RMRK 1.0.0</option>
               <option value="2.0.0">RMRK 2.0.0</option>
-            </Select>
-          </Box>
-        </Box>
-
-        <Box maxW={400}>
-          <Box mb={1}>From:</Box>
-          <Box mb={4}>
-            <Select
-              size={'sm'}
-              onChange={onChange}
-              value={selectedAccount?.address}
-              _focus={{ outline: 'none' }}>
-              {(accounts || []).map((account) => (
-                <option key={`account-${account.address}`} value={account.address}>
-                  {account.meta.name} - {account.address}
-                </option>
-              ))}
             </Select>
           </Box>
         </Box>

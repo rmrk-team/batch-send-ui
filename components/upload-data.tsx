@@ -12,7 +12,7 @@ export default function Dropzone({ onFileAccepted }: { onFileAccepted: Function 
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: '.json',
+    accept: { 'application/json': [] },
     maxFiles: 1,
     multiple: false,
   });
