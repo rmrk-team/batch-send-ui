@@ -2,17 +2,11 @@ import { Box, Button, Select, useToast } from '@chakra-ui/react';
 import PageContainer from '../components/app/page-container';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useApiProvider, usePolkadotExtension } from '@substra-hooks/core';
-import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import { ApiPromise } from '@polkadot/api';
-import { web3FromAddress } from '@polkadot/extension-dapp';
 import Dropzone from './upload-data';
 import { encodeAddress } from '@polkadot/util-crypto';
-import {
-  selectedAccountSelector,
-  selectedWalletSelector,
-  useSelectedAccountsStore,
-  useWalletsStore
-} from "@rmrk-team/dotsama-wallet-react";
+import { selectedAccountSelector, useSelectedAccountsStore } from '@rmrk-team/dotsama-wallet-react';
+import { web3FromSource } from '../lib/web3-from-source';
 
 type SendData = { recipient: string; nftId: string }[];
 
@@ -40,9 +34,10 @@ export const sendBatch = async (
       );
     });
 
-    const acc = await web3FromAddress(accountAddress);
+    const extension = web3FromSource();
+
     const tx = api.tx.utility.batchAll(remarks);
-    await tx.signAndSend(accountAddress, { signer: acc.signer }, async (result) => {
+    await tx.signAndSend(accountAddress, { signer: extension.signer }, async (result) => {
       if (result.status.isInBlock) {
         onPending();
       } else if (result.status.isFinalized) {
@@ -96,7 +91,6 @@ const BatchMint = () => {
     });
   };
 
-
   const onChangeVersion = (e: ChangeEvent<HTMLSelectElement>) => {
     setVersion(e.target.value);
   };
@@ -108,7 +102,15 @@ const BatchMint = () => {
         title: `Sorry you can't send more than 400 NFTs with this UI`,
       });
     } else {
-      sendBatch(apiProvider, selectedAccount?.address, version, sendData, onSuccess, onPending, onError);
+      sendBatch(
+        apiProvider,
+        selectedAccount?.address,
+        version,
+        sendData,
+        onSuccess,
+        onPending,
+        onError,
+      );
     }
   };
 
@@ -122,8 +124,8 @@ const BatchMint = () => {
         const kusamaJsonArray = jsonArray.map(({ recipient, nftId }) => ({
           //reencode address for Kusama
           recipient: encodeAddress(recipient, 2),
-          nftId
-        }))
+          nftId,
+        }));
         setData(kusamaJsonArray);
       }
     };

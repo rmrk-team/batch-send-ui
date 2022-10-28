@@ -8,7 +8,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rmrk-team/dotsama-wallet-react": "^0.0.1",
+    "@rmrk-team/dotsama-wallet-react": "^0.0.3",
+    "@substra-hooks/core": "^0.0.54",
     "framer-motion": "^7.6.2",
     "next": "12.3.1",
     "prettier": "^2.4.1",
@@ -27,7 +28,6 @@
     "@polkadot/react-identicon": "^0.89.4-1",
     "@polkadot/util-crypto": "^10.1.11",
     "@polkadot/x-randomvalues": "^10.1.11",
-    "@substra-hooks/core": "^0.0.52",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
     "eslint": "7",
