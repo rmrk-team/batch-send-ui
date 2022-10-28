@@ -1808,10 +1808,10 @@
   resolved "https://registry.yarnpkg.com/@react-icons/all-files/-/all-files-4.1.0.tgz#477284873a0821928224b6fc84c62d2534d6650b"
   integrity sha512-hxBI2UOuVaI3O/BhQfhtb4kcGn9ft12RWAFVMUeNjqqhLsHvFtzIkFaptBJpFDANTKoDfdVoHTKZDlwKCACbMQ==
 
-"@rmrk-team/dotsama-wallet-react@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@rmrk-team/dotsama-wallet-react/-/dotsama-wallet-react-0.0.3.tgz#9eca81aae9c420d2363b3e3216f8308d7bade31e"
-  integrity sha512-S1lic60z9gVOkTh5LrgALDmSOemsRG71AtB67yktiJJ0M6J/SgGkU8RpmZxERaXC2XpggX60PNUKhHUw1BhGWw==
+"@rmrk-team/dotsama-wallet-react@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@rmrk-team/dotsama-wallet-react/-/dotsama-wallet-react-0.0.5.tgz#9cc64b68e9671a9b4b5534825664e6a9d1069cd4"
+  integrity sha512-vqtxGZDUw2x0JUeqeIwTJf3Ggs5VnroYRzrEZJsIwcLlOYh0rIWRbcTwMjVa/xaYRu8y1ekHh0avZDO8EKB2Jg==
   dependencies:
     "@chakra-ui/react" "^2.2.1"
     "@chakra-ui/system" "^2.1.3"

@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@rmrk-team/dotsama-wallet-react": "^0.0.3",
+    "@rmrk-team/dotsama-wallet-react": "^0.0.5",
     "@substra-hooks/core": "^0.0.54",
     "framer-motion": "^7.6.2",
     "next": "12.3.1",
