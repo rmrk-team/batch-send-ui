@@ -51,7 +51,7 @@ export const sendBatch = async (
   }
 };
 
-const BatchSend = () => {
+const BatchMint = () => {
   const [sendData, setData] = useState<SendData>([]);
   const [selectedAccount, setSelectedAccount] = useState<InjectedAccountWithMeta>();
   const [version, setVersion] = useState('2.0.0');
@@ -224,4 +224,4 @@ const BatchSend = () => {
   );
 };
 
-export default BatchSend;
+export default BatchMint;

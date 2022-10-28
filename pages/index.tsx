@@ -4,14 +4,14 @@ import React from 'react';
 
 import dynamic from 'next/dynamic';
 
-const BatchSend = dynamic(() => import('../components/batch-send'), {
+const BatchMint = dynamic(() => import('../components/batch-mint'), {
   ssr: false,
 });
 
 const Home: NextPage = () => {
   return (
     <Box>
-      <BatchSend />
+      <BatchMint />
     </Box>
   );
 };
