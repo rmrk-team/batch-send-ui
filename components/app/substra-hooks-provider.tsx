@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { ApiProviderConfig, SubstraHooksProvider } from '@substra-hooks/core';
+import { AccountStoreSync } from '@rmrk-team/dotsama-wallet-react';
 
 interface ISubstraHooksProviderProps {
   apiProviderConfig: ApiProviderConfig;
@@ -12,7 +13,10 @@ const SubstraHooksProviderSSR = ({ apiProviderConfig, children }: ISubstraHooksP
       apiProviderConfig={apiProviderConfig}
       defaultApiProviderId={'kusama'}
       autoInitialiseExtension>
-      {children}
+      <>
+        <AccountStoreSync />
+        {children}
+      </>
     </SubstraHooksProvider>
   );
 };
