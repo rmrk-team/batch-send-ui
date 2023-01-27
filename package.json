@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@rmrk-team/dotsama-wallet-react": "^0.0.5",
-    "@substra-hooks/core": "^0.0.54",
+    "@substra-hooks/core": "^0.0.58",
     "framer-motion": "^7.6.2",
     "next": "12.3.1",
     "prettier": "^2.4.1",
@@ -23,15 +23,15 @@
     "@chakra-ui/theme-tools": "2.0.12",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
-    "@polkadot/api": "^9.6.1",
-    "@polkadot/extension-dapp": "^0.44.6",
-    "@polkadot/react-identicon": "^0.89.4-1",
-    "@polkadot/util-crypto": "^10.1.11",
-    "@polkadot/x-randomvalues": "^10.1.11",
+    "@polkadot/api": "^9.12.1",
+    "@polkadot/extension-dapp": "^0.44.8",
+    "@polkadot/react-identicon": "^2.10.1",
+    "@polkadot/util-crypto": "^10.2.6",
+    "@polkadot/x-randomvalues": "^10.2.6",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
     "eslint": "7",
     "eslint-config-next": "12.0.3",
-    "typescript": "4.8.4"
+    "typescript": "4.9.4"
   }
 }
