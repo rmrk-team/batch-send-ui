@@ -4,7 +4,7 @@ import { Center, useColorModeValue, Icon } from '@chakra-ui/react';
 
 export default function Dropzone({ onFileAccepted }: { onFileAccepted: Function }) {
   const onDrop = useCallback(
-    (acceptedFiles) => {
+    (acceptedFiles: File[]) => {
       onFileAccepted(acceptedFiles[0]);
     },
     [onFileAccepted],
