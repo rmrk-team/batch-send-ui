@@ -10,20 +10,17 @@ const SubstraHooksProviderSSR = dynamic(() => import('../components/app/substra-
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-      <>
-          <SubstraHooksProviderSSR
-              apiProviderConfig={{
-                  kusama: {
-                      id: 'kusama',
-                      wsProviderUrl: 'wss://kusama-rpc.polkadot.io',
-                  },
-              }}>
-              <ChakraProvider resetCSS>
-                  <Component {...pageProps} />
-              </ChakraProvider>
-          </SubstraHooksProviderSSR>
-      </>
-
+    <SubstraHooksProviderSSR
+      apiProviderConfig={{
+        kusama: {
+          id: 'kusama',
+          wsProviderUrl: 'wss://kusama-rpc.polkadot.io',
+        },
+      }}>
+      <ChakraProvider resetCSS>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </SubstraHooksProviderSSR>
   );
 }
 
