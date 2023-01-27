@@ -1,25 +1,22 @@
 import '../styles/globals.css';
-import dynamic from 'next/dynamic';
 import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
 import React from 'react';
-const SubstraHooksProviderSSR = dynamic(() => import('../components/app/substra-hooks-provider'), {
-  ssr: false,
-});
+import SubstraHooksProviderSSR from '../components/app/substra-hooks-provider';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SubstraHooksProviderSSR
-      apiProviderConfig={{
-        kusama: {
-          id: 'kusama',
-          wsProviderUrl: 'wss://kusama-rpc.polkadot.io',
-        },
-      }}>
-      <ChakraProvider resetCSS>
+    <ChakraProvider resetCSS>
+      <SubstraHooksProviderSSR
+        apiProviderConfig={{
+          kusama: {
+            id: 'kusama',
+            wsProviderUrl: 'wss://kusama-rpc.polkadot.io',
+          },
+        }}>
         <Component {...pageProps} />
-      </ChakraProvider>
-    </SubstraHooksProviderSSR>
+      </SubstraHooksProviderSSR>
+    </ChakraProvider>
   );
 }
 
